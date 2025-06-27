@@ -1,15 +1,18 @@
 # SE_25_project
 This repositoury contains the software project we developed as our assignment
 
-## Objective
-
-The goal of this software is to provide an interactive tool that both visualizes and manually computes the gradient, divergence, and curl of scalar and vector fields in 2D and 3D, in order to make their behavior easier to understand and explore.
-
 ---
 
 ## Table of Contents
-1. [Features](#features)  
-2. [Concepts Covered](#concepts-covered)  
+1. [Objective](#Objective)
+2. [Features](#features)  
+3. [Concepts Covered](#concepts-covered)
+
+---
+
+## Objective
+
+The goal of this software is to provide an interactive tool that both visualizes and manually computes the gradient, divergence, and curl of scalar and vector fields in 2D and 3D, in order to make their behavior easier to understand and explore.
 
 ---
 
@@ -25,7 +28,7 @@ The goal of this software is to provide an interactive tool that both visualizes
 
 ---
 
-##  Concepts Covered
+##  Theoretical Basis
 
 ###  Scalar Field
 
