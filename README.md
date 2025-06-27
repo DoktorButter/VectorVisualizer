@@ -3,20 +3,20 @@ This repositoury contains the software project we developed as our assignment
 
 ---
 
-## Table of Contents
-1. [Objective](#Objective)
+# Table of Contents
+1. [Objective](#objective)
 2. [Features](#features)  
-3. [Concepts Covered](#concepts-covered)
-
+3. [Theoretical Basis](#theoretical-basis)
+4. [Software Design](#software-design)
 ---
 
-## Objective
+# Objective
 
 The goal of this software is to provide an interactive tool that both visualizes and manually computes the gradient, divergence, and curl of scalar and vector fields in 2D and 3D, in order to make their behavior easier to understand and explore.
 
 ---
 
-## Features
+# Features
 
 -  Interactive visualization of scalar and vector fields
 -  Manual implementation of:
@@ -28,7 +28,7 @@ The goal of this software is to provide an interactive tool that both visualizes
 
 ---
 
-##  Theoretical Basis
+#  Theoretical Basis
 
 ###  Scalar Field
 
@@ -87,5 +87,38 @@ Curl measures the rotational tendency of a vector field at a point (in 2D, it's 
   - Positive: counter-clockwise spin
   - Negative: clockwise spin
   - Zero: conservative field
+
+---
+
+# Software Design
+
+This software is organized into two main components: a mathematics library and a graphical user interface (GUI).
+
+---
+
+### Math Library (MathLib)
+This library is responsible for the implementation of the following operations:
+
+- Gradient Calculator
+- Divergence Calculator
+- Curl Calculator
+
+Each calculator takes a scalar or vector field as input and computes the result in 2D or 3D space.
+
+---
+
+### Graphical User Interface (GUI)
+The GUI provides the front-end interface. It is responsible for:
+
+- Input of scalar or vector fields
+- Selection of the operation
+- Visualization in 2D and 3D
+- Interactive features such as zooming, rotating, and parameter adjustment
+
+---
+
+### Planned Extensions
+- Step-by-step explanation mode for educational purposes
+- Export functionality for visualizations and field data
 
 ---
