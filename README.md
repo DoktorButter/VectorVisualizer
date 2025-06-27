@@ -1,9 +1,9 @@
 # SE_25_project
 This repositoury contains the software project we developed as our assignment
 
-## Visualization of Scalar and Vector Fields
+## Objective
 
-This project focuses on the **visualization** and **independent implementation** of key vector calculus operations—**gradient**, **divergence**, and **curl (rotation)**—applied to **scalar** and **vector fields**. It aims to provide both an educational and practical tool for understanding how these mathematical concepts behave in 2D and 3D space.
+The goal of this software is to provide an interactive tool that both visualizes and manually computes the gradient, divergence, and curl of scalar and vector fields in 2D and 3D, in order to make their behavior easier to understand and explore.
 
 ---
 
