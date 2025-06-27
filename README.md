@@ -35,11 +35,6 @@ A scalar field assigns a single value (a number) to every point in space.
   `f(x, y) = x^2 + y^2`  
   This forms a bowl-shaped surface.
 
-- **Applications**:
-  - Temperature distribution
-  - Elevation/topographic maps
-  - Potential energy fields
-
 ---
 
 ###  Vector Field
@@ -49,11 +44,6 @@ A vector field assigns a vector (magnitude and direction) to each point.
 - **Example**:  
   `F(x, y) = (-y, x)`  
   This creates circular flow around the origin.
-
-- **Applications**:
-  - Fluid dynamics
-  - Magnetic/electric fields
-  - Wind/force maps
 
 ---
 
@@ -68,11 +58,6 @@ The gradient of a scalar field points in the direction of steepest ascent.
   For `f(x, y) = x^2 + y^2`  
   → `∇f = [2x, 2y]`
 
-- **Applications**:
-  - Image edge detection
-  - Physics and mechanics
-  - Machine learning (gradient descent)
-
 ---
 
 ###  Divergence (∇·F)
@@ -85,11 +70,6 @@ Divergence measures how much a vector field spreads out from a point.
 - **Interpretation**:
   - Positive: source (outflow)
   - Negative: sink (inflow)
-
-- **Applications**:
-  - Fluid dynamics
-  - Electromagnetism
-  - Continuity equations
 
 ---
 
@@ -104,10 +84,5 @@ Curl measures the rotational tendency of a vector field at a point (in 2D, it's 
   - Positive: counter-clockwise spin
   - Negative: clockwise spin
   - Zero: conservative field
-
-- **Applications**:
-  - Fluid vorticity
-  - Electromagnetic induction
-  - Rotational physics
 
 ---
