@@ -1,4 +1,4 @@
-# SE_25_project
+# VectorVisualizer (SE_25_project)
 This repositoury contains the software project we developed as our assignment
 
 ---
@@ -8,6 +8,7 @@ This repositoury contains the software project we developed as our assignment
 2. [Features](#features)  
 3. [Theoretical Basis](#theoretical-basis)
 4. [Software Design](#software-design)
+5. [Contributors](#contributors)
 ---
 
 # Objective
@@ -124,5 +125,17 @@ The GUI provides the front-end interface. It is responsible for:
 - Step-by-step explanation mode for educational purposes
 - Application examples from theoretical physics
 - Export functionality for visualizations and field data
+
+---
+
+# Contributors
+
+In joint development by:
+
+### Mr Seib (DoktorButter): student of applied computer science
+ Focus area: Head of software development, assisting in coordination and documentation
+
+### Mr Gläser (PascalGl04): student of geophysics and geoinformatics
+ Focus area: assistaning in software development, coordination, tutorial, examples, documentation
 
 ---
