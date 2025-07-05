@@ -47,7 +47,6 @@
 - [ ] Class `FieldProcessor`:
   - Accepts a field and operator
   - Returns a computed result field (scalar or vector)
-  - maybe Enum `OperatorType { Gradient, Divergence, Curl }`
 
 ---
 
@@ -65,7 +64,6 @@
 - [ ] **Vector Field**:
   - Arrow plots
   - Color-coded magnitude
-- [ ] For simple 2D
 
 ---
 
