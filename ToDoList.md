@@ -59,8 +59,6 @@
   - Result display (2D/3D plot)
 - [ ] GUI logic:
   - OnClick: Load input -> apply operator -> show result
-
-### b) Field Rendering
 - [ ] **Scalar Field**:
   - Heatmap / color map
   - Optional contour lines
