@@ -32,7 +32,7 @@ The goal of this software is to provide an interactive tool that both visualizes
 
 ###  Scalar Field
 
-A scalar field assigns a single value (a number) to every point in space.
+A scalar field assigns a single value (a scalar) to every point in space.
 
 - **Example**:  
   `f(x, y) = x^2 + y^2`  
@@ -61,6 +61,8 @@ The gradient of a scalar field points in the direction of steepest ascent.
   For `f(x, y) = x^2 + y^2`  
   → `∇f = [2x, 2y]`
 
+  In electrostatics, the negative gradient of the potential U results in the electric vector field E
+
 ---
 
 ###  Divergence (∇·F)
@@ -71,6 +73,7 @@ Divergence measures how much a vector field spreads out from a point.
   `div F = ∂F_x/∂x + ∂F_y/∂y`
 
 - **Interpretation**:
+  The divergence is a measure of how strongly vectors diverge, so sources and sinks in vector fields can be identified
   - Positive: source (outflow)
   - Negative: sink (inflow)
 
@@ -103,7 +106,7 @@ This library is responsible for the implementation of the following operations:
 - Divergence Calculator
 - Curl Calculator
 
-Each calculator takes a scalar or vector field as input and computes the result in 2D or 3D space.
+The gradient calculator takes a scalar, the divergence and curl calculator take vector fields as input and compute the result in 2D or 3D space.
 
 ---
 
@@ -119,6 +122,7 @@ The GUI provides the front-end interface. It is responsible for:
 
 ### Planned Extensions
 - Step-by-step explanation mode for educational purposes
+- Application examples from theoretical physics
 - Export functionality for visualizations and field data
 
 ---
