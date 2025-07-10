@@ -81,6 +81,13 @@
 
 ---
 
+##  9. Tutorial
+- [ ] API documentation
+- [ ] Tutorial with presentation of the project, the possibilities and examples
+- [ ] general documentation
+
+---
+
 ##  Optional ?
 - [ ] Full 3D field
 - [ ] Procress bar for long calculations
