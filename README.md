@@ -132,11 +132,19 @@ The GUI provides the front-end interface. It is responsible for:
 
 # LLMs
 
-| Purpose | Model used | Experience |
-
-
-| Documentation (ToDoList, Readme) | GPT 4 | Good for formatting your own concept files and bringing them into a Git-friendly layout.
-  Also suitable for spell checking. Not suitable for generating complete files without a support file. Hardly related to the project,   questionable division of sections, superfluous content |
+| Einsatzzweck | Verwendetes Modell | Erfahrung / Bewertung der Nützlichkeit |
+| ------------------------------------------ | ---------------------- | ------------------------------------------------------------- |
+| Anforderungsanalyse | z. B. ChatGPT-4o | z. B. Gute Strukturierung, aber fehlender Bezug zum Use Case. |
+| Architekturvorschläge / Designideen | | |
+| Code-Generierung (z. B. Klassen, Methoden) | | |
+| Testfallgenerierung (z. B. Unit Tests) | | |
+| Refactoring-Vorschläge | | |
+| Code Review | | |
+| Dokumentation (README, API-Doku etc.) | | |
+| Fehlersuche / Debugginghilfe | | |
+| Versionsverwaltung (Git-Strategien) | | |
+| Kommunikation (z. B. Commit Messages) | | |
+| Sonstiges | | |
 
 ---
 
