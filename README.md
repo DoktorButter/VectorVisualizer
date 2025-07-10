@@ -8,8 +8,9 @@ This repositoury contains the software project we developed as our assignment
 2. [Features](#features)  
 3. [Theoretical Basis](#theoretical-basis)
 4. [Software Design](#software-design)
-5. [Contributors](#contributors)
-6. [License](#license)
+5. [LLMs](#LLMs)
+6. [Contributors](#contributors)
+7. [License](#license)
 ---
 
 # Objective
@@ -126,6 +127,16 @@ The GUI provides the front-end interface. It is responsible for:
 - Step-by-step explanation mode for educational purposes
 - Application examples from theoretical physics
 - Export functionality for visualizations and field data
+
+---
+
+# LLMs
+
+| Purpose | Model used | Experience |
+
+
+| Documentation (ToDoList, Readme) | GPT 4 | Good for formatting your own concept files and bringing them into a Git-friendly layout.
+  Also suitable for spell checking. Not suitable for generating complete files without a support file. Hardly related to the project,   questionable division of sections, superfluous content |
 
 ---
 
