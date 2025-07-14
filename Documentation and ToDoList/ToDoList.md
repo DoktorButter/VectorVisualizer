@@ -20,13 +20,13 @@
 ---
 
 ##  3. Mathematical Operators
-- [ ] **Gradient of a scalar field**
+- [X] **Gradient of a scalar field**
   - Method in `ScalarField`: `VectorField ComputeGradient()`
   - (∂f/∂x, ∂f/∂y, ∂f/∂z)
-- [ ] **Divergence of a vector field**
+- [X] **Divergence of a vector field**
   - Method in `VectorField`: `ScalarField ComputeDivergence()`
   - ∂Vx/∂x + ∂Vy/∂y + ∂Vz/∂z
-- [ ] **Curl of a vector field**
+- [X] **Curl of a vector field**
   - Method in `VectorField`: `VectorField ComputeCurl()`
   - In 3D: (∂Vz/∂y - ∂Vy/∂z, ∂Vx/∂z - ∂Vz/∂x, ∂Vy/∂x - ∂Vx/∂y)
   - In 2D: pseudo-scalar ∂Vy/∂x - ∂Vx/∂y or 3D curl with Vz = 0
@@ -78,6 +78,13 @@
 - [ ] Unit tests for operators
 - [ ] Test cases with known results
 - [ ] GUI testing with edge cases
+
+---
+
+##  9. Tutorial
+- [ ] API documentation
+- [ ] Tutorial with presentation of the project, the possibilities and examples
+- [ ] general documentation
 
 ---
 

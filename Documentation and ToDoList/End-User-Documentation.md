@@ -1,37 +1,44 @@
-# VectorVisualizer (SE_25_project)
-This repositoury contains the software project we developed as our assignment
+# Software Documentation (concept, under development)
+
+- Software: VectorVisualizer
+- Version:  x.x
+- Date:     10. Jul 2025
 
 ---
 
 # Table of Contents
+
 1. [Objective](#objective)
 2. [Features](#features)  
 3. [Theoretical Basis](#theoretical-basis)
-4. [Software Design](#software-design)
-5. [LLMs](#LLMs)
-6. [Contributors](#contributors)
-7. [License](#license)
+4. [Requirements](#requirements)
+5. [Software Design](#software-design)
+6. [Examples](#examples)
+7. [API documentation](#API-documentation)
+8. [License](#license)
+
+
 ---
 
 # Objective
 
-The goal of this software is to provide an interactive tool that both visualizes and manually computes the gradient, divergence, and curl of scalar and vector fields in 2D and 3D, in order to make their behavior easier to understand and explore.
+The aim of this software is to provide an interactive tool that both visualizes
+and calculates the gradient, divergence and curvature of scalar and vector fields.
+The resulting field is output and displayed.
 
 ---
 
 # Features
 
--  Interactive visualization of scalar and vector fields
--  Manual implementation of:
+-  Input scalar field or vector field
   - **Gradient** (∇f)
   - **Divergence** (∇·F)
   - **Curl / Rotation** (∇×F)
--  2D and 3D plotting 
--  Educational explanations and visual demos for each concept
-
+-  2D and 3D plotting of the input and output fields
+  
 ---
 
-#  Theoretical Basis
+# Theoretical Basis
 
 ###  Scalar Field
 
@@ -96,6 +103,10 @@ Curl measures the rotational tendency of a vector field at a point (in 2D, it's 
 
 ---
 
+# Requirements
+
+---
+
 # Software Design
 
 This software is organized into two main components: a mathematics library and a graphical user interface (GUI).
@@ -120,45 +131,17 @@ The GUI provides the front-end interface. It is responsible for:
 - Selection of the operation
 - Visualization in 2D and 3D
 - Interactive features such as zooming, rotating, and parameter adjustment
+  
+---
+
+# Examples
 
 ---
 
-### Planned Extensions
-- Step-by-step explanation mode for educational purposes
-- Application examples from theoretical physics
-- Export functionality for visualizations and field data
+# API documentation
 
 ---
 
-# LLMs
-
-| Einsatzzweck | Verwendetes Modell | Erfahrung / Bewertung der Nützlichkeit |
-| ------------------------------------------ | ---------------------- | ------------------------------------------------------------- |
-| Anforderungsanalyse | z. B. ChatGPT-4o | z. B. Gute Strukturierung, aber fehlender Bezug zum Use Case. |
-| Architekturvorschläge / Designideen | | |
-| Code-Generierung (z. B. Klassen, Methoden) | | |
-| Testfallgenerierung (z. B. Unit Tests) | | |
-| Refactoring-Vorschläge | | |
-| Code Review | | |
-| Dokumentation (README, API-Doku etc.) | | |
-| Fehlersuche / Debugginghilfe | | |
-| Versionsverwaltung (Git-Strategien) | | |
-| Kommunikation (z. B. Commit Messages) | | |
-| Sonstiges | | |
-
----
-
-# Contributors
-
-In joint development by:
-
-### Mr Seib (DoktorButter): student of applied computer science
- Focus area: Head of software development, assisting in coordination and documentation
-
-### Mr Gläser (PascalGl04): student of geophysics and geoinformatics
- Focus area: assistaning in software development, coordination, tutorial, examples, documentation
-
----
 # License
 
 MIT License
@@ -186,3 +169,5 @@ SOFTWARE.
 text source: https://choosealicense.com/licenses/mit/
 
 ---
+
+
