@@ -134,17 +134,17 @@ The GUI provides the front-end interface. It is responsible for:
 
 | Einsatzzweck | Verwendetes Modell | Erfahrung / Bewertung der Nützlichkeit |
 | ------------------------------------------ | ---------------------- | ------------------------------------------------------------- |
-| Anforderungsanalyse | z. B. ChatGPT-4o | z. B. Gute Strukturierung, aber fehlender Bezug zum Use Case. |
-| Architekturvorschläge / Designideen | | |
-| Code-Generierung (z. B. Klassen, Methoden) | | |
-| Testfallgenerierung (z. B. Unit Tests) | | |
-| Refactoring-Vorschläge | | |
-| Code Review | | |
-| Dokumentation (README, API-Doku etc.) | | |
-| Fehlersuche / Debugginghilfe | | |
-| Versionsverwaltung (Git-Strategien) | | |
-| Kommunikation (z. B. Commit Messages) | | |
-| Sonstiges | | |
+| Anforderungsanalyse | ChatGPT-4o | funktionierte perfekt |
+| Architekturvorschläge / Designideen | ChatGPT-4o | Funktionierte meistens, manchmal wurden GUI und Logik zusammengewürfelt |
+| Code-Generierung (z. B. Klassen, Methoden) | ChatGPT-4o |Die grobe Struktur war auf anhieb richtig, die Feinheiten waren jedoch sehr Fehlerhaft |
+| Testfallgenerierung (z. B. Unit Tests) | ChatGPT-4o | funktionierte Fehlerfrei |
+| Refactoring-Vorschläge | ChatGPT-4o | funktionierte Fehlerfrei, jedoch auch wenig benutzt |
+| Code Review | ChatGPT-4o | Fehlerfrei, vor allem wenn es ums erklären des Codes ging |
+| Dokumentation (README, API-Doku etc.) | ChatGPT-4o | funktionierte Fehlerfrei |
+| Fehlersuche / Debugginghilfe | ChatGPT-4o | Nicht empfehlenswert, hat dauernd Fehler "behoben", indem er Sie durch andere Fehler ersetzt hat. Zum Ende hin wurde dies nicht mehr mit einer LLM gelöst |
+| Versionsverwaltung (Git-Strategien) | ChatGPT-4o | funktionierte Fehlerfrei |
+| Kommunikation (z. B. Commit Messages) | ChatGPT-4o | es wurde kein LLM für die Kommunikation genutzt |
+| Sonstiges | ChatGPT-4o | |
 
 ---
 
