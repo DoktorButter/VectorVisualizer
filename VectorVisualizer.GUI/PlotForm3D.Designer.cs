@@ -1,6 +1,6 @@
 ﻿namespace VectorVisualizer.GUI
 {
-    partial class PlotForm
+    partial class PlotForm3D
     {
         /// <summary>
         /// Required designer variable.
@@ -30,14 +30,13 @@
         {
             SuspendLayout();
             // 
-            // PlotForm
+            // PlotForm3D
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Name = "PlotForm";
-            Text = "PlotForm";
-            Load += PlotForm_Load;
+            Name = "PlotForm3D";
+            Text = "PlotForm3D";
             ResumeLayout(false);
         }
 

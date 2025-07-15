@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using NCalc;
 using VectorVisualizer.MathLib;
+using System.Globalization;
 
 namespace VectorVisualizer.GUI
 {
@@ -51,7 +52,7 @@ namespace VectorVisualizer.GUI
         private void BtnSkalarfeld_Click(object sender, EventArgs e)
         {
             {
-}
+            }
             bool is3D = cbIs3D.Checked;
 
             this.Controls.Clear();
@@ -96,8 +97,8 @@ namespace VectorVisualizer.GUI
 
             Label lblInfo = new Label();
             lblInfo.Text = is3D
-                ? "Hinweis: Nur x, y und z verwenden. Beispiel: x*y + z"
-                : "Hinweis: Nur x und y verwenden. Beispiel: 2*x + y*y";
+                ? "Hinweis: Nur x, y und z verwenden"
+                : "Hinweis: Nur x und y verwenden";
             lblInfo.ForeColor = Color.LightGray;
             lblInfo.Location = new Point(30, 110);
             lblInfo.AutoSize = true;
@@ -128,15 +129,23 @@ namespace VectorVisualizer.GUI
                     try
                     {
                         var testExpr = new Expression(expr);
+
                         testExpr.Parameters["x"] = 1.0;
                         testExpr.Parameters["y"] = 1.0;
-                        testExpr.Evaluate();
+                        if (is3D)
+                            testExpr.Parameters["z"] = 1.0;
+
+                        var result = testExpr.Evaluate();
+                        if (result == null || double.IsNaN(Convert.ToDouble(result)))
+                            throw new Exception("Ergebnis ist ungültig");
                     }
-                    catch
+                    catch (Exception ex)
                     {
-                        MessageBox.Show("Die Funktion ist ungültig.", "Parserfehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Die Funktion ist ungültig oder nicht auswertbar.\nDetails: " + ex.Message,
+                            "Parserfehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
+
 
                     double? px = null, py = null, pz = null;
                     double xVal = 0, yVal = 0;
@@ -214,6 +223,84 @@ namespace VectorVisualizer.GUI
                         plotWindow.Show();
 
                     }
+                    else
+                    {
+                        // Ausdruck validieren
+                        var testExpr = new Expression(expr);
+                        testExpr.Parameters["x"] = 1.0;
+                        testExpr.Parameters["y"] = 1.0;
+                        testExpr.Parameters["z"] = 1.0;
+                        try
+                        {
+                            testExpr.Evaluate();
+                        }
+                        catch
+                        {
+                            MessageBox.Show("Funktion ungültig.", "Fehler");
+                            return;
+                        }
+
+                        // Delegate für f(x, y, z)
+                        Func<double, double, double, double> func3D = (x, y, z) =>
+                            EvaluateScalarField(expr, x, y, z);
+
+                        // Punkt einlesen (optional)
+                        // Punkt einlesen (optional)
+                        double? ppx = null, ppy = null, ppz = null;
+
+                        bool hasZ = !string.IsNullOrWhiteSpace(txtZ.Text);
+
+                        // Fehler, wenn nur teilweise befüllt
+                        if ((hasX || hasY || hasZ) && !(hasX && hasY && hasZ))
+                        {
+                            MessageBox.Show("Bitte entweder alle drei Koordinaten (x, y, z) angeben oder keine.",
+                                "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+
+                        // Falls alle drei gesetzt sind, versuche sie zu parsen
+                        if (hasX && hasY && hasZ)
+                        {
+                            if (
+                                double.TryParse(txtX.Text, NumberStyles.Float, CultureInfo.InvariantCulture, out xVal) &&
+                                double.TryParse(txtY.Text, NumberStyles.Float, CultureInfo.InvariantCulture, out yVal) &&
+                                double.TryParse(txtZ.Text, NumberStyles.Float, CultureInfo.InvariantCulture, out double zVal))
+                            {
+                                ppx = xVal;
+                                ppy = yVal;
+                                ppz = zVal;
+                            }
+                            else
+                            {
+                                MessageBox.Show("Bitte gültige Zahlen für x, y und z eingeben.",
+                                    "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                return;
+                            }
+                        }
+
+
+                        // Gradiententext berechnen (falls gewünscht)
+                        double zFixed = ppz ?? 0; // Ebene, auf der geplottet wird
+                        string? gradientText = null;
+
+                        if (cbGradient.Checked && ppx.HasValue && ppy.HasValue && ppz.HasValue)
+                        {
+                            var grad = FieldOperations.ComputeGradient3D(func3D, ppx.Value, ppy.Value, ppz.Value);
+                            gradientText =
+                                $"Gradient:\n(∂f/∂x, ∂f/∂y, ∂f/∂z) = " +
+                                $"({Math.Round(grad[0], 4)}, {Math.Round(grad[1], 4)}, {Math.Round(grad[2], 4)})";
+                        }
+
+                        // Visualisierung starten
+                        var plotWindow = new PlotForm3D(func3D, zFixed, 80, gradientText);
+                        plotWindow.StartPosition = FormStartPosition.CenterScreen;
+                        plotWindow.Show();
+                    }
+
+
+
+
+
                 }
                 catch (Exception ex)
                 {
@@ -223,99 +310,280 @@ namespace VectorVisualizer.GUI
             };
             this.Controls.Add(btnVisualisieren);
         }
-        
+
         private void BtnVektorfeld_Click(object sender, EventArgs e)
         {
-            {
-}
+            bool is3D = cbIs3D.Checked;
+
             this.Controls.Clear();
             this.BackColor = Color.FromArgb(33, 33, 33);
             this.ForeColor = Color.White;
 
-            Label lblFx = new Label();
-            lblFx.Text = "Fx(x, y):";
-            lblFx.Location = new Point(30, 30);
-            lblFx.AutoSize = true;
-            this.Controls.Add(lblFx);
+            if (!is3D)
+            {
+                // ===================== 2D-Vektorfeld =====================
+                Label lblFx = new Label { Text = "Fx(x, y):", Location = new Point(30, 30), AutoSize = true };
+                TextBox txtFx = new TextBox { Location = new Point(100, 25), Width = 300 };
+                this.Controls.Add(lblFx);
+                this.Controls.Add(txtFx);
 
-            TextBox txtFx = new TextBox();
-            txtFx.Location = new Point(100, 25);
-            txtFx.Width = 300;
+                Label lblFy = new Label { Text = "Fy(x, y):", Location = new Point(30, 70), AutoSize = true };
+                TextBox txtFy = new TextBox { Location = new Point(100, 65), Width = 300 };
+                this.Controls.Add(lblFy);
+                this.Controls.Add(txtFy);
+
+                Label lblPoint = new Label { Text = "Punkt (x, y):", Location = new Point(30, 110), AutoSize = true };
+                TextBox txtX = new TextBox { Location = new Point(130, 105), Width = 60 };
+                TextBox txtY = new TextBox { Location = new Point(200, 105), Width = 60 };
+                this.Controls.Add(lblPoint);
+                this.Controls.Add(txtX);
+                this.Controls.Add(txtY);
+
+                CheckBox cbDivergenz = new CheckBox { Text = "Divergenz anzeigen", Location = new Point(30, 150), AutoSize = true, ForeColor = Color.White, BackColor = Color.FromArgb(33, 33, 33) };
+                CheckBox cbRotation = new CheckBox { Text = "Rotation anzeigen", Location = new Point(30, 180), AutoSize = true, ForeColor = Color.White, BackColor = Color.FromArgb(33, 33, 33) };
+                this.Controls.Add(cbDivergenz);
+                this.Controls.Add(cbRotation);
+
+                Button btnVisualisieren = new Button { Text = "Visualisieren", Location = new Point(30, 220), AutoSize = true, BackColor = Color.FromArgb(33, 33, 33), ForeColor = Color.White };
+                this.Controls.Add(btnVisualisieren);
+
+                btnVisualisieren.Click += (s, args) =>
+                {
+                    try
+                    {
+                        string fxExpr = txtFx.Text.Trim();
+                        string fyExpr = txtFy.Text.Trim();
+
+                        if (string.IsNullOrWhiteSpace(fxExpr) || string.IsNullOrWhiteSpace(fyExpr))
+                        {
+                            MessageBox.Show("Bitte sowohl Fx als auch Fy eingeben.", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+
+                        try
+                        {
+                            var testFx = new Expression(fxExpr);
+                            var testFy = new Expression(fyExpr);
+                            testFx.Parameters["x"] = 1.0;
+                            testFx.Parameters["y"] = 1.0;
+                            testFy.Parameters["x"] = 1.0;
+                            testFy.Parameters["y"] = 1.0;
+                            testFx.Evaluate();
+                            testFy.Evaluate();
+                        }
+                        catch
+                        {
+                            MessageBox.Show("Mindestens ein Ausdruck ist ungültig.", "Parserfehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+
+                        double? px = null, py = null;
+                        bool hasX = !string.IsNullOrWhiteSpace(txtX.Text);
+                        bool hasY = !string.IsNullOrWhiteSpace(txtY.Text);
+
+                        if ((hasX && !hasY) || (!hasX && hasY))
+                        {
+                            MessageBox.Show("Bitte entweder beide Koordinaten x und y angeben oder keine.", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+
+                        double xVal = 0, yVal = 0;
+                        if (hasX && !double.TryParse(txtX.Text, out xVal))
+                        {
+                            MessageBox.Show("x ist keine gültige Zahl.", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+                        if (hasY && !double.TryParse(txtY.Text, out yVal))
+                        {
+                            MessageBox.Show("y ist keine gültige Zahl.", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+
+                        if (hasX && hasY)
+                        {
+                            px = xVal;
+                            py = yVal;
+                        }
+
+                        int size = 25;
+                        double xMin = -5, xMax = 5;
+                        double yMin = -5, yMax = 5;
+                        double stepX = (xMax - xMin) / size;
+                        double stepY = (yMax - yMin) / size;
+
+                        double[][,] vectorField = new double[2][,];
+                        vectorField[0] = new double[size, size];
+                        vectorField[1] = new double[size, size];
+
+                        double[,] divergence = null;
+                        double[,] rotation = null;
+
+                        Func<double, double, double[]> vectorFunc = (x, y) =>
+                        {
+                            double fx = EvaluateScalarField(fxExpr, x, y);
+                            double fy = EvaluateScalarField(fyExpr, x, y);
+                            return new double[] { fx, fy };
+                        };
+
+                        if (cbDivergenz.Checked) divergence = new double[size, size];
+                        if (cbRotation.Checked) rotation = new double[size, size];
+
+                        for (int i = 0; i < size; i++)
+                        {
+                            for (int j = 0; j < size; j++)
+                            {
+                                double x = xMin + i * stepX;
+                                double y = yMin + j * stepY;
+                                try
+                                {
+                                    var vec = vectorFunc(x, y);
+                                    vectorField[0][i, j] = vec[0];
+                                    vectorField[1][i, j] = vec[1];
+
+                                    if (cbDivergenz.Checked)
+                                        divergence[i, j] = FieldOperations.ComputeDivergence2D(vectorFunc, x, y);
+                                    if (cbRotation.Checked)
+                                        rotation[i, j] = FieldOperations.ComputeCurl2D(vectorFunc, x, y);
+                                }
+                                catch
+                                {
+                                    vectorField[0][i, j] = double.NaN;
+                                    vectorField[1][i, j] = double.NaN;
+                                    if (divergence != null) divergence[i, j] = double.NaN;
+                                    if (rotation != null) rotation[i, j] = double.NaN;
+                                }
+                            }
+                        }
+
+                        var plotWindow = new VektorPlotForm2D(vectorField, xMin, xMax, yMin, yMax, divergence, rotation, px, py);
+                        plotWindow.StartPosition = FormStartPosition.CenterScreen;
+                        plotWindow.Show();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Fehler bei der Berechnung:\n" + ex.Message, "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                };
+            }
+            else
+            {
+                // ===================== 3D-Vektorfeld – GUI vorbereiten =====================
+                InitializeVektorfeld3DGUI(); // die neue Methode aus dem vorherigen Schritt
+            }
+        }
+        private void InitializeVektorfeld3DGUI()
+        {
+            this.Controls.Clear();
+            this.BackColor = Color.FromArgb(33, 33, 33);
+            this.ForeColor = Color.White;
+
+            // Fx(x,y,z)
+            Label lblFx = new Label { Text = "Fx(x, y, z):", Location = new Point(30, 30), AutoSize = true };
+            TextBox txtFx = new TextBox { Name = "txtFx3D", Location = new Point(130, 25), Width = 300 };
+            this.Controls.Add(lblFx);
             this.Controls.Add(txtFx);
 
-            Label lblFy = new Label();
-            lblFy.Text = "Fy(x, y):";
-            lblFy.Location = new Point(30, 70);
-            lblFy.AutoSize = true;
+            // Fy(x,y,z)
+            Label lblFy = new Label { Text = "Fy(x, y, z):", Location = new Point(30, 70), AutoSize = true };
+            TextBox txtFy = new TextBox { Name = "txtFy3D", Location = new Point(130, 65), Width = 300 };
             this.Controls.Add(lblFy);
-
-            TextBox txtFy = new TextBox();
-            txtFy.Location = new Point(100, 65);
-            txtFy.Width = 300;
             this.Controls.Add(txtFy);
 
-            Label lblPoint = new Label();
-            lblPoint.Text = "Punkt (x, y):";
-            lblPoint.Location = new Point(30, 110);
-            lblPoint.AutoSize = true;
+            // Fz(x,y,z)
+            Label lblFz = new Label { Text = "Fz(x, y, z):", Location = new Point(30, 110), AutoSize = true };
+            TextBox txtFz = new TextBox { Name = "txtFz3D", Location = new Point(130, 105), Width = 300 };
+            this.Controls.Add(lblFz);
+            this.Controls.Add(txtFz);
+
+            // Punkt (x,y,z)
+            Label lblPoint = new Label { Text = "Punkt (x, y, z):", Location = new Point(30, 150), AutoSize = true };
+            TextBox txtX = new TextBox { Name = "txtX3D", Location = new Point(130, 145), Width = 60 };
+            TextBox txtY = new TextBox { Name = "txtY3D", Location = new Point(200, 145), Width = 60 };
+            TextBox txtZ = new TextBox { Name = "txtZ3D", Location = new Point(270, 145), Width = 60 };
             this.Controls.Add(lblPoint);
-
-            TextBox txtX = new TextBox();
-            txtX.Location = new Point(130, 105);
-            txtX.Width = 60;
             this.Controls.Add(txtX);
-
-            TextBox txtY = new TextBox();
-            txtY.Location = new Point(200, 105);
-            txtY.Width = 60;
             this.Controls.Add(txtY);
+            this.Controls.Add(txtZ);
 
-            CheckBox cbDivergenz = new CheckBox();
-            cbDivergenz.Text = "Divergenz anzeigen";
-            cbDivergenz.ForeColor = Color.White;
-            cbDivergenz.BackColor = Color.FromArgb(33, 33, 33);
-            cbDivergenz.Location = new Point(30, 150);
-            cbDivergenz.AutoSize = true;
+            // Checkbox Divergenz
+            CheckBox cbDivergenz = new CheckBox
+            {
+                Text = "Divergenz anzeigen",
+                Name = "cbDivergenz3D",
+                Location = new Point(30, 190),
+                AutoSize = true,
+                ForeColor = Color.White,
+                BackColor = Color.FromArgb(33, 33, 33)
+            };
             this.Controls.Add(cbDivergenz);
 
-            CheckBox cbRotation = new CheckBox();
-            cbRotation.Text = "Rotation anzeigen";
-            cbRotation.ForeColor = Color.White;
-            cbRotation.BackColor = Color.FromArgb(33, 33, 33);
-            cbRotation.Location = new Point(30, 180);
-            cbRotation.AutoSize = true;
+            // Checkbox Rotation
+            CheckBox cbRotation = new CheckBox
+            {
+                Text = "Rotation anzeigen",
+                Name = "cbRotation3D",
+                Location = new Point(30, 220),
+                AutoSize = true,
+                ForeColor = Color.White,
+                BackColor = Color.FromArgb(33, 33, 33)
+            };
             this.Controls.Add(cbRotation);
 
-            Button btnVisualisieren = new Button();
-            btnVisualisieren.Text = "Visualisieren";
-            btnVisualisieren.ForeColor = Color.White;
-            btnVisualisieren.BackColor = Color.FromArgb(33, 33, 33);
-            btnVisualisieren.Location = new Point(30, 220);
-            btnVisualisieren.AutoSize = true;
-            btnVisualisieren.Click += (s, args) =>
+            // Button
+            Button btnVisualisieren = new Button
+            {
+                Text = "Visualisieren",
+                Location = new Point(130, 260),
+                Size = new Size(120, 30),
+                BackColor = Color.FromArgb(33, 33, 33),
+                ForeColor = Color.White
+            };
+            this.Controls.Add(btnVisualisieren);
+
+            // Noch keine Logik – kommt im nächsten Schritt
+            btnVisualisieren.Click += (s, e) =>
             {
                 try
                 {
-                    string fxExpr = txtFx.Text.Trim();
-                    string fyExpr = txtFy.Text.Trim();
+                    // Controls holen
+                    string fxExpr = ((TextBox)this.Controls["txtFx3D"]).Text.Trim();
+                    string fyExpr = ((TextBox)this.Controls["txtFy3D"]).Text.Trim();
+                    string fzExpr = ((TextBox)this.Controls["txtFz3D"]).Text.Trim();
 
-                    if (string.IsNullOrWhiteSpace(fxExpr) || string.IsNullOrWhiteSpace(fyExpr))
+                    string xText = ((TextBox)this.Controls["txtX3D"]).Text.Trim();
+                    string yText = ((TextBox)this.Controls["txtY3D"]).Text.Trim();
+                    string zText = ((TextBox)this.Controls["txtZ3D"]).Text.Trim();
+
+                    bool hasX = !string.IsNullOrWhiteSpace(xText);
+                    bool hasY = !string.IsNullOrWhiteSpace(yText);
+                    bool hasZ = !string.IsNullOrWhiteSpace(zText);
+
+                    bool showDiv = ((CheckBox)this.Controls["cbDivergenz3D"]).Checked;
+                    bool showRot = ((CheckBox)this.Controls["cbRotation3D"]).Checked;
+
+                    // Prüfung: leere oder alle 3 Koordinaten
+                    if ((hasX || hasY || hasZ) && !(hasX && hasY && hasZ))
                     {
-                        MessageBox.Show("Bitte sowohl Fx als auch Fy eingeben.", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Bitte entweder alle drei Koordinaten x, y, z angeben oder keine.", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
 
                     // Ausdruck prüfen
                     try
                     {
-                        var testFx = new Expression(fxExpr);
-                        var testFy = new Expression(fyExpr);
-                        testFx.Parameters["x"] = 1.0;
-                        testFx.Parameters["y"] = 1.0;
-                        testFy.Parameters["x"] = 1.0;
-                        testFy.Parameters["y"] = 1.0;
-                        testFx.Evaluate();
-                        testFy.Evaluate();
+                        var t1 = new Expression(fxExpr);
+                        var t2 = new Expression(fyExpr);
+                        var t3 = new Expression(fzExpr);
+                        t1.Parameters["x"] = 1.0;
+                        t1.Parameters["y"] = 1.0;
+                        t1.Parameters["z"] = 1.0;
+                        t2.Parameters["x"] = 1.0;
+                        t2.Parameters["y"] = 1.0;
+                        t2.Parameters["z"] = 1.0;
+                        t3.Parameters["x"] = 1.0;
+                        t3.Parameters["y"] = 1.0;
+                        t3.Parameters["z"] = 1.0;
+                        t1.Evaluate(); t2.Evaluate(); t3.Evaluate();
                     }
                     catch
                     {
@@ -323,107 +591,114 @@ namespace VectorVisualizer.GUI
                         return;
                     }
 
-                    // Optionaler Punkt
-                    double? px = null, py = null;
-                    bool hasX = !string.IsNullOrWhiteSpace(txtX.Text);
-                    bool hasY = !string.IsNullOrWhiteSpace(txtY.Text);
-
-                    if ((hasX && !hasY) || (!hasX && hasY))
+                    // Punkt optional einlesen
+                    double? px = null, py = null, pz = null;
+                    if (hasX && hasY && hasZ)
                     {
-                        MessageBox.Show("Bitte entweder beide Koordinaten x und y angeben oder keine.", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
-                    }
-                    double xVal = 0, yVal = 0;
-                    if (hasX && !double.TryParse(txtX.Text, out xVal))
-                    {
-                        MessageBox.Show("x ist keine gültige Zahl.", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
-                    }
-
-                    if (hasY && !double.TryParse(txtY.Text, out yVal))
-                    {
-                        MessageBox.Show("y ist keine gültige Zahl.", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
+                        if (double.TryParse(xText, NumberStyles.Float, CultureInfo.InvariantCulture, out double xVal) &&
+                            double.TryParse(yText, NumberStyles.Float, CultureInfo.InvariantCulture, out double yVal) &&
+                            double.TryParse(zText, NumberStyles.Float, CultureInfo.InvariantCulture, out double zVal))
+                        {
+                            px = xVal; py = yVal; pz = zVal;
+                        }
+                        else
+                        {
+                            MessageBox.Show("Bitte gültige Werte für x, y, z eingeben.", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
                     }
 
-                    if (hasX && hasY)
+                    // Vektorfeldfunktion
+                    Func<double, double, double, double[]> vectorFunc = (x, y, z) =>
                     {
-                        px = xVal;
-                        py = yVal;
-                    }
-
-
-                    // Feld berechnen
-                    int size = 25;
-                    double xMin = -5, xMax = 5;
-                    double yMin = -5, yMax = 5;
-                    double stepX = (xMax - xMin) / size;
-                    double stepY = (yMax - yMin) / size;
-
-                    double[][,] vectorField = new double[2][,];
-                    vectorField[0] = new double[size, size]; // Fx
-                    vectorField[1] = new double[size, size]; // Fy
-
-                    double[,] divergence = null;
-                    double[,] rotation = null;
-
-                    Func<double, double, double[]> vectorFunc = (x, y) =>
-                    {
-                        double fx = EvaluateScalarField(fxExpr, x, y);
-                        double fy = EvaluateScalarField(fyExpr, x, y);
-                        return new double[] { fx, fy };
+                        return new double[]
+                        {
+                EvaluateScalarField(fxExpr, x, y, z),
+                EvaluateScalarField(fyExpr, x, y, z),
+                EvaluateScalarField(fzExpr, x, y, z)
+                        };
                     };
 
-                    if (cbDivergenz.Checked)
-                    {
-                        divergence = new double[size, size];
-                    }
+                    // Feld berechnen
+                    int size = 10;
+                    double min = -5, max = 5;
+                    double step = (max - min) / size;
 
-                    if (cbRotation.Checked)
+                    var vectors = new double[3][,,];
+                    vectors[0] = new double[size, size, size]; // Fx
+                    vectors[1] = new double[size, size, size]; // Fy
+                    vectors[2] = new double[size, size, size]; // Fz
+
+                    double[,,] divergence = showDiv ? new double[size, size, size] : null;
+                    double[][,,] curl = showRot ? new double[3][,,] : null;
+                    if (showRot)
                     {
-                        rotation = new double[size, size];
+                        curl[0] = new double[size, size, size]; // curl_x
+                        curl[1] = new double[size, size, size]; // curl_y
+                        curl[2] = new double[size, size, size]; // curl_z
                     }
 
                     for (int i = 0; i < size; i++)
                     {
                         for (int j = 0; j < size; j++)
                         {
-                            double x = xMin + i * stepX;
-                            double y = yMin + j * stepY;
-                            try
+                            for (int k = 0; k < size; k++)
                             {
-                                var vec = vectorFunc(x, y);
-                                vectorField[0][i, j] = vec[0]; // Fx
-                                vectorField[1][i, j] = vec[1]; // Fy
+                                double x = min + i * step;
+                                double y = min + j * step;
+                                double z = min + k * step;
+                                try
+                                {
+                                    var vec = vectorFunc(x, y, z);
+                                    vectors[0][i, j, k] = vec[0];
+                                    vectors[1][i, j, k] = vec[1];
+                                    vectors[2][i, j, k] = vec[2];
 
-                                if (cbDivergenz.Checked)
-                                    divergence[i,j] = FieldOperations.ComputeDivergence2D(vectorFunc, x, y);
+                                    if (showDiv)
+                                        divergence[i, j, k] = FieldOperations.ComputeDivergence3D(vectorFunc, x, y, z);
 
-                                if (cbRotation.Checked)
-                                    rotation[i, j] = FieldOperations.ComputeCurl2D(vectorFunc, x, y);
-                            }
-                            catch
-                            {
-                                vectorField[0][i, j] = double.NaN;
-                                vectorField[1][i, j] = double.NaN;
-                                if (divergence != null) divergence[i, j] = double.NaN;
-                                if (rotation != null) rotation[i, j] = double.NaN;
+                                    if (showRot)
+                                    {
+                                        var rot = FieldOperations.ComputeCurl3D(vectorFunc, x, y, z);
+                                        curl[0][i, j, k] = rot[0];
+                                        curl[1][i, j, k] = rot[1];
+                                        curl[2][i, j, k] = rot[2];
+                                    }
+                                }
+                                catch
+                                {
+                                    vectors[0][i, j, k] = vectors[1][i, j, k] = vectors[2][i, j, k] = double.NaN;
+                                    if (showDiv) divergence[i, j, k] = double.NaN;
+                                    if (showRot) { curl[0][i, j, k] = curl[1][i, j, k] = curl[2][i, j, k] = double.NaN; }
+                                }
                             }
                         }
                     }
-                    var plotWindow = new VektorPlotForm2D(vectorField, xMin, xMax, yMin, yMax, divergence, rotation, px, py);
+
+                    // Entscheide, ob das InfoPanel angezeigt werden soll
+                    bool showInfoPanel = (showDiv || showRot) && px.HasValue && py.HasValue && pz.HasValue;
+
+                    var plotWindow = new VektorPlotForm3D(
+                        vectors,
+                        -5, 5, -5, 5, -5, 5,
+                        showInfoPanel ? divergence : null,
+                        showInfoPanel ? curl : null,
+                        px, py, pz);
+
                     plotWindow.StartPosition = FormStartPosition.CenterScreen;
                     plotWindow.Show();
+
+
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Fehler bei der Berechnung:\n" + ex.Message,
-                        "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Fehler:\n" + ex.Message, "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-
             };
-            this.Controls.Add(btnVisualisieren);
+
         }
+
+
 
 
         private double EvaluateScalarField(string expressionText, double x, double y, double? z = null)
@@ -444,5 +719,9 @@ namespace VectorVisualizer.GUI
             return Convert.ToDouble(expr.Evaluate());
         }
 
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

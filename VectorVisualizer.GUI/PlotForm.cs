@@ -76,6 +76,11 @@ namespace VectorVisualizer.GUI
 
             formsPlot.Refresh();
         }
+
+        private void PlotForm_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
 
