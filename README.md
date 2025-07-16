@@ -231,7 +231,7 @@ Student der Geophysik & Geoinformatik
 → Unterstützung bei der Entwicklung
 
 ---
-# License
+# Lizens
 
 MIT License
 
