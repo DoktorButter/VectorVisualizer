@@ -8,15 +8,13 @@
 ---
 
 ##  2. Grid structur
-- [ ] **Scalar Field**:
+- [X] **Scalar Field**:
   - Class `ScalarField`:
     - Grid structure (e.g., 2D array)
     - Resolution / grid size
-- [ ] **Vector Field**:
+- [X] **Vector Field**:
   - Class `VectorField`:
     - Two or three 2D arrays (x,y,z)
-    - Same grid structure as `ScalarField`
-
 ---
 
 ##  3. Mathematical Operators
@@ -34,49 +32,48 @@
 ---
 
 ##  4. Data Input 
-- [ ] Load data manually or from file:
-  - CSV / JSON / TXT / Excel...
+- [X] Load data manually
   - Grid of scalar values or vector components (Vx, Vy, Vz)
-- [ ] Validate input / Error handling:
+- [X] Validate input / Error handling:
   - Matching grid sizes
   - Numeric parsing correct
 
 ---
 
 ##  5. Operator Application Logic
-- [ ] Class `FieldProcessor`:
+- [X] Class `FieldProcessor`:
   - Accepts a field and operator
   - Returns a computed result field (scalar or vector)
 
 ---
 
 ##  6. Visualization / GUI
-- [ ]
+- [X]
   - Input: Load scalar or vector field
   - Operator selection (ComboBox)
   - "Compute" button
   - Result display (2D/3D plot)
-- [ ] GUI logic:
+- [X] GUI logic:
   - OnClick: Load input -> apply operator -> show result
-- [ ] **Scalar Field**:
+- [X] **Scalar Field**:
   - Heatmap / color map
   - Optional contour lines
-- [ ] **Vector Field**:
+- [X] **Vector Field**:
   - Arrow plots
-  - Color-coded magnitude
+
 
 ---
 
 ##  7. Error Handling
-- [ ] Input validation (grid size, invalid values, empty fields)
-- [ ] Error messages -> GUI
+- [X] Input validation (grid size, invalid values, empty fields)
+- [X] Error messages -> GUI
 - [ ] Tooltips or help for operator explanations
 
 ---
 
 ##  8. Testing
 - [ ] Unit tests for operators
-- [ ] Test cases with known results
+- [X] Test cases with known results
 - [ ] GUI testing with edge cases
 
 ---
@@ -84,14 +81,15 @@
 ##  9. Tutorial
 - [ ] API documentation
 - [ ] Tutorial with presentation of the project, the possibilities and examples
-- [ ] general documentation
+- [X] general documentation
 
 ---
 
 ##  Optional ?
-- [ ] Full 3D field
+- [X] Full 3D field
 - [ ] Procress bar for long calculations
-- [ ] Custom operator combinations
+- [X] all possible calc at ones
+- [ ] Magnitude color vectors
 
 ---
 
