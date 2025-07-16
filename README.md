@@ -1,162 +1,234 @@
-# VectorVisualizer (SE_25_project)
-This repositoury contains the software project we developed as our assignment
+# VectorVisualizer (SE_25_projekt)
+
+Dieses Repository enthält das Softwareprojekt, das wir im Rahmen unserer Aufgabenstellung entwickelt haben.
 
 ---
 
-# Table of Contents
-1. [Objective](#objective)
-2. [Features](#features)  
-3. [Theoretical Basis](#theoretical-basis)
-4. [Software Design](#software-design)
-5. [LLMs](#LLMs)
-6. [Contributors](#contributors)
-7. [License](#license)
----
+# Inhaltsverzeichnis
 
-# Objective
-
-The goal of this software is to provide an interactive tool that both visualizes and manually computes the gradient, divergence, and curl of scalar and vector fields in 2D and 3D, in order to make their behavior easier to understand and explore.
+1. [Zielsetzung](#zielsetzung)  
+2. [Funktionen](#funktionen)  
+3. [Theoretische Grundlagen](#theoretische-grundlagen)  
+4. [Software-Design](#software-design)
+5. [Anleitung zur Nutzun](#anleitung-zur-nutzung)
+6. [LLMs](#llms)  
+7. [Mitwirkende](#mitwirkende)
+8. [Lizens](#lizens)
 
 ---
 
-# Features
+# Zielsetzung
 
--  Interactive visualization of scalar and vector fields
--  Manual implementation of:
+Ziel dieser Software ist es, ein interaktives Werkzeug bereitzustellen, das sowohl die Visualisierung als auch die manuelle Berechnung von Gradient, Divergenz und Rotation (Curl) von Skalar- und Vektorfeldern in 2D und 3D ermöglicht – um ihr Verhalten verständlicher zu machen.
+
+---
+
+# Funktionen
+
+- Interaktive Visualisierung von Skalar- und Vektorfeldern  
+- Manuelle Implementierung von:
   - **Gradient** (∇f)
-  - **Divergence** (∇·F)
-  - **Curl / Rotation** (∇×F)
--  2D and 3D plotting 
--  Educational explanations and visual demos for each concept
+  - **Divergenz** (∇·F)
+  - **Rotation / Curl** (∇×F)
+- 2D- und 3D-Darstellung
 
 ---
 
-#  Theoretical Basis
+# Theoretische Grundlagen
 
-###  Scalar Field
+### Skalarfeld
 
-A scalar field assigns a single value (a scalar) to every point in space.
+Ein Skalarfeld ordnet jedem Punkt im Raum einen einzelnen Wert (Skalar) zu.
 
-- **Example**:  
+- **Beispiel**:  
   `f(x, y) = x^2 + y^2`  
-  This forms a bowl-shaped surface.
+  → ergibt eine schüsselförmige Oberfläche.
 
 ---
 
-###  Vector Field
+### Vektorfeld
 
-A vector field assigns a vector (magnitude and direction) to each point.
+Ein Vektorfeld weist jedem Punkt einen Vektor (Betrag und Richtung) zu.
 
-- **Example**:  
+- **Beispiel**:  
   `F(x, y) = (-y, x)`  
-  This creates circular flow around the origin.
+  → ergibt einen kreisförmigen Fluss um den Ursprung.
 
 ---
 
-###  Gradient (∇f)
+### Gradient (∇f)
 
-The gradient of a scalar field points in the direction of steepest ascent.
+Der Gradient eines Skalarfelds zeigt in die Richtung des stärksten Anstiegs.
 
 - **Definition**:  
   `∇f = [∂f/∂x, ∂f/∂y]`
 
-- **Example**:  
-  For `f(x, y) = x^2 + y^2`  
+- **Beispiel**:  
+  Für `f(x, y) = x^2 + y^2`  
   → `∇f = [2x, 2y]`
 
-  In electrostatics, the negative gradient of the potential U results in the electric vector field E
+  In der Elektrostatik ergibt der negative Gradient des Potentials U das elektrische Feld E.
 
 ---
 
-###  Divergence (∇·F)
+### Divergenz (∇·F)
 
-Divergence measures how much a vector field spreads out from a point.
+Die Divergenz misst, wie stark ein Vektorfeld aus einem Punkt heraus strömt.
 
 - **Definition**:  
   `div F = ∂F_x/∂x + ∂F_y/∂y`
 
 - **Interpretation**:
-  The divergence is a measure of how strongly vectors diverge, so sources and sinks in vector fields can be identified
-  - Positive: source (outflow)
-  - Negative: sink (inflow)
+  - Positiv: Quelle (Ausfluss)
+  - Negativ: Senke (Einfluss)
 
 ---
 
-###  Curl / Rotation (∇×F)
+### Rotation / Curl (∇×F)
 
-Curl measures the rotational tendency of a vector field at a point (in 2D, it's a scalar).
+Die Rotation beschreibt das Wirbelverhalten eines Vektorfeldes an einem Punkt (in 2D ist es ein Skalar).
 
 - **Definition (2D)**:  
   `curl F = ∂F_y/∂x - ∂F_x/∂y`
 
 - **Interpretation**:
-  - Positive: counter-clockwise spin
-  - Negative: clockwise spin
-  - Zero: conservative field
+  - Positiv: Drehung gegen den Uhrzeigersinn
+  - Negativ: Drehung im Uhrzeigersinn
+  - Null: konservatives Feld
 
 ---
 
-# Software Design
+# Software-Design
 
-This software is organized into two main components: a mathematics library and a graphical user interface (GUI).
-
----
-
-### Math Library (MathLib)
-This library is responsible for the implementation of the following operations:
-
-- Gradient Calculator
-- Divergence Calculator
-- Curl Calculator
-
-The gradient calculator takes a scalar, the divergence and curl calculator take vector fields as input and compute the result in 2D or 3D space.
+Diese Software besteht aus zwei Hauptkomponenten: einer Mathematikbibliothek und einer grafischen Benutzeroberfläche (GUI).
 
 ---
 
-### Graphical User Interface (GUI)
-The GUI provides the front-end interface. It is responsible for:
+### Mathematik-Bibliothek (MathLib)
 
-- Input of scalar or vector fields
-- Selection of the operation
-- Visualization in 2D and 3D
-- Interactive features such as zooming, rotating, and parameter adjustment
+Diese Bibliothek enthält die Implementierung der folgenden Operationen:
+
+- Gradientenberechnung  
+- Divergenzberechnung  
+- Rotationsberechnung
+
+Der Gradientenrechner verwendet Skalarfelder, Divergenz und Rotation nutzen Vektorfelder – jeweils für 2D und 3D.
 
 ---
 
-### Planned Extensions
-- Step-by-step explanation mode for educational purposes
-- Application examples from theoretical physics
-- Export functionality for visualizations and field data
+### Grafische Benutzeroberfläche (GUI)
+
+Die GUI dient als Frontend und ermöglicht:
+
+- Eingabe von Skalar- oder Vektorfeldern
+- Auswahl gewünschter Operationen
+- Visualisierung in 2D oder 3D
+- Interaktive Bedienung (Zoom & Drehung)
+
+---
+
+
+# Anleitung zur Nutzung
+
+## 1. Startbildschirm
+
+Nach dem Start der Anwendung öffnet sich ein Auswahlfenster mit folgenden Optionen:
+
+- **„Skalarfeld“** → Zur Eingabe und Visualisierung von Funktionen wie `f(x, y)` oder `f(x, y, z)`
+- **„Vektorfeld“** → Zur Eingabe von `Fx(x, y)` und `Fy(x, y)` zur Darstellung eines 2D-Vektorfelds
+- Zusätzlich kann über die Checkbox „**Ist die Funktion 3D?**“ zwischen 2D- und 3D-Modus umgeschaltet werden.
+
+---
+
+## Gültige mathematische Funktionen:
+
+| Ausdruck            | Beispiel               |
+|---------------------|------------------------|
+| `+`, `-`, `*`, `/`  | `x*y + 3/z`            |
+| `^`                 | `x^2`, `z^3`           |
+| `Sqrt(x)`           | `Sqrt(x^2 + y^2)`      |
+| `Sin(x)`            | `Sin(x + y)`           |
+| `Cos(x)`            | `Cos(x)`               |
+| `Tan(x)`            | `Tan(y)`               |
+| `Exp(x)`            | `Exp(x + y)`           |
+| `Log(x)`            | `Log(x^2)`             |
+| `Abs(x)`            | `Abs(x - y)`           |
+- Bei Funktionen wie **S**in -> den ersten Buchstaben **immer** groß schreiben
+- **Multiplikation muss explizit angegeben werden**: `2x`  → `2*x`  
+- Verwende **nur x, y [, z]** – keine anderen Variablen!
+- Bei Syntaxfehlern oder nicht definierbaren Ausdrücken erfolgt eine Fehlermeldung.
+
+## 2. Skalarfelder eingeben
+
+- **2D-Beispiel**:  
+  `f(x, y) = Sin(x) * y + x^2`
+
+- **3D-Beispiel**:  
+  `f(x, y, z) = x*y + z^2`
+
+---
+
+## 3. Vektorfelder eingeben
+
+Gib die zwei Komponenten `Fx(x, y)` und `Fy(x, y)` separat ein. Beispiele:
+
+- **Beispiel 1 (Rotation um Ursprung)**  
+  - `Fx = -y`  
+  - `Fy = x`  
+
+- **Beispiel 2 (konservatives Feld)**  
+  - `Fx = x`  
+  - `Fy = y`
+
+Optional kannst du einen Punkt `(x, y)` angeben, um Divergenz und Rotation an dieser Stelle zu berechnen und anzeigen zu lassen.
+
+---
+
+## 4. Visualisierung starten
+
+- Klicke auf **„Visualisieren“**, um das Feld als Heatmap (Skalar) oder Pfeildiagramm (Vektor) darzustellen.
+- Falls ein Punkt angegeben wurde, wird der **Gradient** (bei Skalarfeldern), die **Divergenz** oder **Rotation** (bei Vektorfeldern) zusätzlich berechnet und in einem Infofeld angezeigt.
+- Außerdem wird zusätzlich eine interaktive Ansicht (Zoomen, Drehen) ermöglicht.
+
+---
+
+## 5. Fehlerbehandlung
+
+- Bei fehlerhaften Eingaben erfolgt eine Rückmeldung (z. B. ungültige Funktion oder Punkt).
+- Numerische Berechnungen (Gradient, Divergenz, Curl) erfolgen mit zentralem Differenzenquotienten.
 
 ---
 
 # LLMs
 
-| Einsatzzweck | Verwendetes Modell | Erfahrung / Bewertung der Nützlichkeit |
-| ------------------------------------------ | ---------------------- | ------------------------------------------------------------- |
-| Anforderungsanalyse | ChatGPT-4o | funktionierte perfekt |
-| Architekturvorschläge / Designideen | ChatGPT-4o | Funktionierte meistens, manchmal wurden GUI und Logik zusammengewürfelt |
-| Code-Generierung (z. B. Klassen, Methoden) | ChatGPT-4o |Die grobe Struktur war auf anhieb richtig, die Feinheiten waren jedoch sehr Fehlerhaft |
-| Testfallgenerierung (z. B. Unit Tests) | ChatGPT-4o | funktionierte Fehlerfrei |
-| Refactoring-Vorschläge | ChatGPT-4o | funktionierte Fehlerfrei, jedoch auch wenig benutzt |
-| Code Review | ChatGPT-4o | Fehlerfrei, vor allem wenn es ums erklären des Codes ging |
-| Dokumentation (README, API-Doku etc.) | ChatGPT-4o | funktionierte Fehlerfrei |
-| Fehlersuche / Debugginghilfe | ChatGPT-4o | Nicht empfehlenswert, hat dauernd Fehler "behoben", indem er Sie durch andere Fehler ersetzt hat. Zum Ende hin wurde dies nicht mehr mit einer LLM gelöst |
-| Versionsverwaltung (Git-Strategien) | ChatGPT-4o | funktionierte Fehlerfrei |
-| Kommunikation (z. B. Commit Messages) | ChatGPT-4o | es wurde kein LLM für die Kommunikation genutzt |
-| Sonstiges | ChatGPT-4o | |
+| Einsatzzweck                       | Verwendetes Modell | Erfahrung / Bewertung |
+|-----------------------------------|--------------------|------------------------|
+| Anforderungsanalyse               | ChatGPT-4o         | funktionierte perfekt |
+| Architektur / Designideen         | ChatGPT-4o         | oft hilfreich, aber manchmal unklar getrennt zwischen Logik & UI, oft überflüssige Inhalte |
+| Codegenerierung                   | ChatGPT-4o         | Struktur gut, Details oft fehlerhaft |
+| Testfallgenerierung               | ChatGPT-4o         | funktionierte fehlerfrei |
+| Refactoring-Vorschläge            | ChatGPT-4o         | fehlerfrei, aber selten genutzt |
+| Code Review                       | ChatGPT-4o         | sehr hilfreich zum Verstehen |
+| Dokumentation (README etc.)       | ChatGPT-4o         | funktionierte gut, besonders gut, wenn ChatGPT eine Konzeptdatei gegeben wird |
+| Fehlersuche / Debugginghilfe      | ChatGPT-4o         | nicht empfehlenswert, Fehler wurden durch neue ersetzt |
+| Versionsverwaltung / Git          | ChatGPT-4o         | funktionierte fehlerfrei |
+| Kommunikation (z. B. Committexte) | ChatGPT-4o         | nicht verwendet |
+| Sonstiges                         | ChatGPT-4o         | – |
 
 ---
 
-# Contributors
+# Mitwirkende
 
-In joint development by:
+In gemeinsamer Entwicklung durch:
 
-### Mr Seib (DoktorButter): student of applied computer science
- Focus area: Head of software development, assisting in coordination and documentation
+### Kevin Seib (DoktorButter):  
+Student der Angewandten Informatik  
+→ Verantwortlich für die Entwicklung
 
-### Mr Gläser (PascalGl04): student of geophysics and geoinformatics
- Focus area: assistaning in software development, coordination, tutorial, examples, documentation
+### Pascal Gläser (PascalGl04):  
+Student der Geophysik & Geoinformatik  
+→ Verantwortlich für Koordination, Dokumentation, Beispiele und Tutorial. 
+→ Unterstützung bei der Entwicklung
 
 ---
 # License
