@@ -1,8 +1,8 @@
 # Software Documentation (concept, under development)
 
 - Software: VectorVisualizer
-- Version:  x.x
-- Date:     10. Jul 2025
+- Version:  1.0
+- Date:     16. Jul 2025
 
 ---
 
@@ -13,7 +13,7 @@
 3. [Theoretical Basis](#theoretical-basis)
 4. [Requirements](#requirements)
 5. [Software Design](#software-design)
-6. [Examples](#examples)
+6. [Instructions for use](#instructionsforuse)
 7. [API documentation](#API-documentation)
 8. [License](#license)
 
@@ -134,7 +134,75 @@ The GUI provides the front-end interface. It is responsible for:
   
 ---
 
-# Examples
+# Instructions for use
+
+## 1. Start Screen
+
+After launching the application, a selection window will appear with the following options:
+
+- **“Scalar Field”** → For entering and visualizing functions such as `f(x, y)` or `f(x, y, z)`
+- **“Vector Field”** → For entering `Fx(x, y)` and `Fy(x, y)` to display a 2D vector field
+- Additionally, you can switch between 2D and 3D mode using the checkbox **“Is the function 3D?”**
+
+---
+
+## Valid Mathematical Functions:
+
+| Expression           | Example                |
+|----------------------|------------------------|
+| `+`, `-`, `*`, `/`   | `x*y + 3/z`            |
+| `^`                  | `x^2`, `z^3`           |
+| `Sqrt(x)`            | `Sqrt(x^2 + y^2)`      |
+| `Sin(x)`             | `Sin(x + y)`           |
+| `Cos(x)`             | `Cos(x)`               |
+| `Tan(x)`             | `Tan(y)`               |
+| `Exp(x)`             | `Exp(x + y)`           |
+| `Log(x)`             | `Log(x^2)`             |
+| `Abs(x)`             | `Abs(x - y)`           |
+
+- For functions like **S**in, always **capitalize the first letter**
+- **Multiplication must be written explicitly**: `2x` → `2*x`  
+- Use **only x, y [, z]** – no other variables!
+- If there are syntax errors or invalid expressions, an error message will be shown.
+
+## 2. Entering Scalar Fields
+
+- **2D Example**:  
+  `f(x, y) = Sin(x) * y + x^2`
+
+- **3D Example**:  
+  `f(x, y, z) = x*y + z^2`
+
+---
+
+## 3. Entering Vector Fields
+
+Enter the two components `Fx(x, y)` and `Fy(x, y)` separately. Examples:
+
+- **Example 1 (rotation around origin)**  
+  - `Fx = -y`  
+  - `Fy = x`  
+
+- **Example 2 (conservative field)**  
+  - `Fx = x`  
+  - `Fy = y`
+
+Optionally, you can specify a point `(x, y)` to calculate and display divergence and curl at that location.
+
+---
+
+## 4. Start Visualization
+
+- Click **“Visualize”** to display the field as a heatmap (scalar) or vector diagram (vector).
+- If a point was provided, the **gradient** (for scalar fields), **divergence** or **curl** (for vector fields) will also be calculated and displayed in an info box.
+- An interactive view (zooming, rotation) will also be available.
+
+---
+
+## 5. Error Handling
+
+- Invalid inputs will trigger a warning (e.g., invalid function or point).
+- Numerical calculations (gradient, divergence, curl) use the central difference method.
 
 ---
 
