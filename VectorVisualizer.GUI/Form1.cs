@@ -97,7 +97,7 @@ namespace VectorVisualizer.GUI
 
             Label lblInfo = new Label();
             lblInfo.Text = is3D
-                ? "Hinweis: Nur x, y und z verwenden"
+                ? "Hinweis: Nur x, y und z verwenden. z ist konstant."
                 : "Hinweis: Nur x und y verwenden";
             lblInfo.ForeColor = Color.LightGray;
             lblInfo.Location = new Point(30, 110);
