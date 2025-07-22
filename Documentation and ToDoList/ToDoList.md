@@ -67,14 +67,12 @@
 ##  7. Error Handling
 - [X] Input validation (grid size, invalid values, empty fields)
 - [X] Error messages -> GUI
-- [ ] Tooltips or help for operator explanations
 
 ---
 
 ##  8. Testing
-- [ ] Unit tests for operators
 - [X] Test cases with known results
-- [ ] GUI testing with edge cases
+- [X] GUI testing with edge cases
 
 ---
 
@@ -90,6 +88,8 @@
 - [ ] Procress bar for long calculations
 - [X] all possible calc at ones
 - [ ] Magnitude color vectors
-
+- [ ] Unit tests for operators
+- [X] Tooltips or help for operator explanations (in Readme)
+      
 ---
 
