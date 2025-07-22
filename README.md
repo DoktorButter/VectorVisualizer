@@ -2,7 +2,7 @@
 
 Dieses Repository enthält das Softwareprojekt, das wir im Rahmen unserer Aufgabenstellung entwickelt haben.
 
-Doxygen Link (copy & paste): elaborate-frangollo-1581ce.netlify.app
+Doxygen Link (copy & paste): https://zippy-starship-cce21f.netlify.app/
 
 enthält die Dokumentation und die .cs files zum nachschlagen. Weitere Dokumentationselemente sind in der README.md und End User Doc. zu finden
 
