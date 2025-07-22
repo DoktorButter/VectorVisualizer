@@ -1,4 +1,4 @@
-# VectorVisualizer (SE_25_projekt) 
+# VectorVisualizer V1.2 (SE_25_projekt) 
 
 Dieses Repository enthält das Softwareprojekt, das wir im Rahmen unserer Aufgabenstellung entwickelt haben.
 
@@ -16,7 +16,7 @@ Tutorial (dt): https://youtu.be/kHz2lOcHaBA
 2. [Funktionen](#funktionen)  
 3. [Theoretische Grundlagen](#theoretische-grundlagen)  
 4. [Software-Design](#software-design)
-5. [Anleitung zur Nutzun](#anleitung-zur-nutzung)
+5. [Anleitung zur Nutzung](#anleitung-zur-nutzung)
 6. [LLMs](#llms)  
 7. [Mitwirkende](#mitwirkende)
 8. [Lizens](#lizens)
