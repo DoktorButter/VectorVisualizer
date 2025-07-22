@@ -1,8 +1,10 @@
-# VectorVisualizer (SE_25_projekt)
+# VectorVisualizer (SE_25_projekt) 
 
 Dieses Repository enthält das Softwareprojekt, das wir im Rahmen unserer Aufgabenstellung entwickelt haben.
-Doxygen Doc: elaborate-frangollo-1581ce.netlify.app
+---
+Doxygen Link: elaborate-frangollo-1581ce.netlify.app
 
+enthält die Dokumentation und die .cs files zum nachschlagen. Weitere Dokumentationselemente sind in der README.md und End User Doc. zu finden
 ---
 
 # Inhaltsverzeichnis
