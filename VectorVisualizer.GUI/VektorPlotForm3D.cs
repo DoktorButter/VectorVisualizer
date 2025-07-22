@@ -160,7 +160,7 @@ namespace VectorVisualizer.GUI
                 if (divergence != null)
                 {
                     double divVal = divergence[i, j, k];
-                    infoText += $"Divergenz:\n∇·F(x, y, z) = {Math.Round(divVal, 4)}\n\n";
+                    infoText += $"Divergenz: ∇·F(x, y, z):\n {Math.Round(divVal, 4)}\n\n";
                 }
 
                 if (curl != null)
@@ -168,7 +168,7 @@ namespace VectorVisualizer.GUI
                     double cx = curl[0][i, j, k];
                     double cy = curl[1][i, j, k];
                     double cz = curl[2][i, j, k];
-                    infoText += $"Rotation:\n∇×F = ({Math.Round(cx, 4)}, {Math.Round(cy, 4)}, {Math.Round(cz, 4)})";
+                    infoText += $"Rotation:∇×F:\n ({Math.Round(cx, 4)}, {Math.Round(cy, 4)}, {Math.Round(cz, 4)})";
                 }
 
                 var label = new Label

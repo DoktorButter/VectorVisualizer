@@ -48,7 +48,6 @@ namespace VectorVisualizer.GUI
                     if (double.IsFinite(fx) && double.IsFinite(fy))
                     {
                         var arrow = plt.Add.Arrow(x, y, x + fx * 0.2, y + fy * 0.2);
-                        //arrow.ArrowheadWidth = 5;                                       //################################  HIER PFEILSTÄRKE ÄNDERN IRGENDWANN/
 
                     }
                 }
@@ -72,7 +71,7 @@ namespace VectorVisualizer.GUI
                     i = Math.Clamp(i, 0, divergence.GetLength(0) - 1);
                     j = Math.Clamp(j, 0, divergence.GetLength(1) - 1);
                     double divVal = divergence[i, j];
-                    infoText += $"Divergenz:\n∇·F(x, y) = {Math.Round(divVal, 4)}\n\n";
+                    infoText += $"Divergenz: ∇·F(x, y): \n {Math.Round(divVal, 4)}\n\n";
                 }
 
                 if (rotation != null)
@@ -82,7 +81,7 @@ namespace VectorVisualizer.GUI
                     i = Math.Clamp(i, 0, rotation.GetLength(0) - 1);
                     j = Math.Clamp(j, 0, rotation.GetLength(1) - 1);
                     double rotVal = rotation[i, j];
-                    infoText += $"Rotation:\n∇×F(x, y) = {Math.Round(rotVal, 4)}";
+                    infoText += $"Rotation: ∇×F(x, y): \n {Math.Round(rotVal, 4)}";
                 }
 
                 var infoLabel = new System.Windows.Forms.Label();

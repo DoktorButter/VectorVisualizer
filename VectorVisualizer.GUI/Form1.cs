@@ -1,9 +1,10 @@
-﻿using System;
+﻿using NCalc;
+using System;
 using System.Drawing;
-using System.Windows.Forms;
-using NCalc;
-using VectorVisualizer.MathLib;
 using System.Globalization;
+using System.Text.RegularExpressions;
+using System.Windows.Forms;
+using VectorVisualizer.MathLib;
 
 namespace VectorVisualizer.GUI
 {
@@ -21,6 +22,7 @@ namespace VectorVisualizer.GUI
 
         private void InitializeStartScreen()
         {
+            this.Controls.Clear();
             this.BackColor = Color.FromArgb(33, 33, 33);
             this.ForeColor = Color.White;
             this.Text = "Vektorkalkül Visualisierung";
@@ -48,6 +50,15 @@ namespace VectorVisualizer.GUI
             cbIs3D.AutoSize = true;
             this.Controls.Add(cbIs3D);
         }
+        private string NormalizeExpression(string expr)
+        {
+            // einfache Variablen: x^2 → Pow(x,2)
+            expr = Regex.Replace(expr, @"(\b[a-zA-Z_]\w*)\^(\d+)", "Pow($1,$2)");
+            // Klammerausdrücke: (x+1)^2 → Pow((x+1),2)
+            expr = Regex.Replace(expr, @"\(([^()]+)\)\^(\d+)", "Pow(($1),$2)");
+            return expr;
+        }
+
 
         private void BtnSkalarfeld_Click(object sender, EventArgs e)
         {
@@ -95,26 +106,19 @@ namespace VectorVisualizer.GUI
                 this.Controls.Add(txtZ);
             }
 
-            Label lblInfo = new Label();
-            lblInfo.Text = is3D
-                ? "Hinweis: Nur x, y und z verwenden. z ist konstant."
-                : "Hinweis: Nur x und y verwenden";
-            lblInfo.ForeColor = Color.LightGray;
-            lblInfo.Location = new Point(30, 110);
-            lblInfo.AutoSize = true;
-            this.Controls.Add(lblInfo);
-
             CheckBox cbGradient = new CheckBox();
             cbGradient.Text = "Gradient anzeigen (Falls valide Punkte gegeben sind)";
             cbGradient.ForeColor = Color.White;
             cbGradient.BackColor = Color.FromArgb(33, 33, 33);
-            cbGradient.Location = new Point(170, 130);
+            cbGradient.Location = new Point(30, 110);
             cbGradient.AutoSize = true;
             this.Controls.Add(cbGradient);
             Button btnVisualisieren = new Button();
             btnVisualisieren.Text = "Visualisieren";
-            btnVisualisieren.Location = new Point(170, 170);
+            btnVisualisieren.Location = new Point(30, 140);
+            btnVisualisieren.Size = new Size(120, 30);
             btnVisualisieren.Click += (s, args) =>
+
             {
                 try
                 {
@@ -128,6 +132,7 @@ namespace VectorVisualizer.GUI
                     // Vorab prüfen, ob Ausdruck gültig ist
                     try
                     {
+                        expr = NormalizeExpression(expr);
                         var testExpr = new Expression(expr);
 
                         testExpr.Parameters["x"] = 1.0;
@@ -193,7 +198,7 @@ namespace VectorVisualizer.GUI
 
                         double[,] values = new double[size, size];
 
-                        for (int i = 0; i < size; i++)
+                        for (int i = 0; i < size; i++) // i = x, j = y
                         {
                             for (int j = 0; j < size; j++)
                             {
@@ -201,11 +206,11 @@ namespace VectorVisualizer.GUI
                                 double y = yMin + j * stepY;
                                 try
                                 {
-                                    values[i, j] = EvaluateScalarField(expr, x, y);
+                                    values[size - j - 1,i] = EvaluateScalarField(expr, x, y);
                                 }
                                 catch
                                 {
-                                    values[i, j] = double.NaN;
+                                    values[size - j - 1,i] = double.NaN;
                                 }
                             }
                         }
@@ -215,7 +220,7 @@ namespace VectorVisualizer.GUI
                         {
                             Func<double, double, double> funcDelegate = (x, y) => EvaluateScalarField(expr, x, y);
                             var grad = FieldOperations.ComputeGradient2D(funcDelegate, px.Value, py.Value);
-                            gradientText = $"(∂f/∂x, ∂f/∂y) = ({Math.Round(grad[0], 4)}, {Math.Round(grad[1], 4)})";
+                            gradientText = $"(∂f/∂x, ∂f/∂y): \n ({Math.Round(grad[0], 4)}, {Math.Round(grad[1], 4)})";
                         }
 
                         var plotWindow = new PlotForm(values, xMin, xMax, yMin, yMax, gradientText, cbGradient.Checked);
@@ -226,6 +231,7 @@ namespace VectorVisualizer.GUI
                     else
                     {
                         // Ausdruck validieren
+                        expr = NormalizeExpression(expr);
                         var testExpr = new Expression(expr);
                         testExpr.Parameters["x"] = 1.0;
                         testExpr.Parameters["y"] = 1.0;
@@ -239,12 +245,9 @@ namespace VectorVisualizer.GUI
                             MessageBox.Show("Funktion ungültig.", "Fehler");
                             return;
                         }
-
-                        // Delegate für f(x, y, z)
                         Func<double, double, double, double> func3D = (x, y, z) =>
                             EvaluateScalarField(expr, x, y, z);
 
-                        // Punkt einlesen (optional)
                         // Punkt einlesen (optional)
                         double? ppx = null, ppy = null, ppz = null;
 
@@ -279,7 +282,7 @@ namespace VectorVisualizer.GUI
                         }
 
 
-                        // Gradiententext berechnen (falls gewünscht)
+                        // Gradienten berechnen (falls gewünscht)
                         double zFixed = ppz ?? 0; // Ebene, auf der geplottet wird
                         string? gradientText = null;
 
@@ -287,7 +290,7 @@ namespace VectorVisualizer.GUI
                         {
                             var grad = FieldOperations.ComputeGradient3D(func3D, ppx.Value, ppy.Value, ppz.Value);
                             gradientText =
-                                $"Gradient:\n(∂f/∂x, ∂f/∂y, ∂f/∂z) = " +
+                                $"(∂f/∂x, ∂f/∂y, ∂f/∂z): \n " +
                                 $"({Math.Round(grad[0], 4)}, {Math.Round(grad[1], 4)}, {Math.Round(grad[2], 4)})";
                         }
 
@@ -309,6 +312,8 @@ namespace VectorVisualizer.GUI
                 }
             };
             this.Controls.Add(btnVisualisieren);
+            this.Controls.Add(CreateBackButton());
+
         }
 
         private void BtnVektorfeld_Click(object sender, EventArgs e)
@@ -321,7 +326,6 @@ namespace VectorVisualizer.GUI
 
             if (!is3D)
             {
-                // ===================== 2D-Vektorfeld =====================
                 Label lblFx = new Label { Text = "Fx(x, y):", Location = new Point(30, 30), AutoSize = true };
                 TextBox txtFx = new TextBox { Location = new Point(100, 25), Width = 300 };
                 this.Controls.Add(lblFx);
@@ -345,14 +349,16 @@ namespace VectorVisualizer.GUI
                 this.Controls.Add(cbRotation);
 
                 Button btnVisualisieren = new Button { Text = "Visualisieren", Location = new Point(30, 220), AutoSize = true, BackColor = Color.FromArgb(33, 33, 33), ForeColor = Color.White };
+                btnVisualisieren.Size = new Size(120, 30);
                 this.Controls.Add(btnVisualisieren);
+                this.Controls.Add(CreateBackButton());
 
                 btnVisualisieren.Click += (s, args) =>
                 {
                     try
                     {
-                        string fxExpr = txtFx.Text.Trim();
-                        string fyExpr = txtFy.Text.Trim();
+                        string fxExpr = NormalizeExpression(txtFx.Text.Trim());
+                        string fyExpr = NormalizeExpression(txtFy.Text.Trim());
 
                         if (string.IsNullOrWhiteSpace(fxExpr) || string.IsNullOrWhiteSpace(fyExpr))
                         {
@@ -467,8 +473,7 @@ namespace VectorVisualizer.GUI
             }
             else
             {
-                // ===================== 3D-Vektorfeld – GUI vorbereiten =====================
-                InitializeVektorfeld3DGUI(); // die neue Methode aus dem vorherigen Schritt
+                InitializeVektorfeld3DGUI();
             }
         }
         private void InitializeVektorfeld3DGUI()
@@ -533,22 +538,22 @@ namespace VectorVisualizer.GUI
             Button btnVisualisieren = new Button
             {
                 Text = "Visualisieren",
-                Location = new Point(130, 260),
+                Location = new Point(30, 260),
                 Size = new Size(120, 30),
                 BackColor = Color.FromArgb(33, 33, 33),
                 ForeColor = Color.White
             };
             this.Controls.Add(btnVisualisieren);
+            this.Controls.Add(CreateBackButton());
 
-            // Noch keine Logik – kommt im nächsten Schritt
             btnVisualisieren.Click += (s, e) =>
             {
                 try
                 {
                     // Controls holen
-                    string fxExpr = ((TextBox)this.Controls["txtFx3D"]).Text.Trim();
-                    string fyExpr = ((TextBox)this.Controls["txtFy3D"]).Text.Trim();
-                    string fzExpr = ((TextBox)this.Controls["txtFz3D"]).Text.Trim();
+                    string fxExpr = NormalizeExpression(((TextBox)this.Controls["txtFx3D"]).Text.Trim());
+                    string fyExpr = NormalizeExpression(((TextBox)this.Controls["txtFy3D"]).Text.Trim());
+                    string fzExpr = NormalizeExpression(((TextBox)this.Controls["txtFz3D"]).Text.Trim());
 
                     string xText = ((TextBox)this.Controls["txtX3D"]).Text.Trim();
                     string yText = ((TextBox)this.Controls["txtY3D"]).Text.Trim();
@@ -717,6 +722,19 @@ namespace VectorVisualizer.GUI
             expr.Parameters["x"] = x;
             expr.Parameters["y"] = y;
             return Convert.ToDouble(expr.Evaluate());
+        }
+
+        private Button CreateBackButton()
+        {
+            Button btnBack = new Button();
+            btnBack.Text = "Zurück";
+            btnBack.Size = new Size(100, 30);
+            btnBack.BackColor = Color.FromArgb(55, 55, 55);
+            btnBack.ForeColor = Color.White;
+            btnBack.Location = new Point(this.ClientSize.Width - 120, this.ClientSize.Height - 50);
+            btnBack.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnBack.Click += (s, e) => InitializeStartScreen();
+            return btnBack;
         }
 
         private void Form1_Load(object sender, EventArgs e)

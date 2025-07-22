@@ -20,7 +20,7 @@ namespace VectorVisualizer.GUI
             InitializeComponent();
 
             // Fenster
-            this.Text = "Skalarfeld Visualisierung";
+            this.Text = "2D Skalarfeld Visualisierung";
             this.Size = new Size(800, 600);
             this.BackColor = System.Drawing.Color.FromArgb(33, 33, 33);
 
@@ -54,6 +54,8 @@ namespace VectorVisualizer.GUI
             plt.Axes.Color(Colors.White);
             plt.Axes.Left.Label.Text = "y";
             plt.Axes.Bottom.Label.Text = "x";
+            plt.Axes.SetLimits(-25, 25, -25, 25);
+            heatmap.Position = new(-25, 25, -25, 25);
 
             // Farblegende
             heatmap.Colormap = new Turbo();
@@ -62,7 +64,7 @@ namespace VectorVisualizer.GUI
             var mainLayout = new TableLayoutPanel();
             mainLayout.Dock = DockStyle.Fill;
             mainLayout.ColumnCount = 2;
-            mainLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 200)); // linker Rand
+            mainLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 200));
             mainLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100)); // Plot
 
             // Panel (nur falls vorhanden)
