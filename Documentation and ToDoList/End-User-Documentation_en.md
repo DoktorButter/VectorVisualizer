@@ -1,8 +1,10 @@
 # Software Documentation (concept, under development)
 
+Doxygen link: elaborate-frangollo-1581ce.netlify.app
+
 - Software: VectorVisualizer
-- Version:  1.0
-- Date:     16. Jul 2025
+- Version:  1.1
+- Date:     22. Jul 2025
 
 ---
 
