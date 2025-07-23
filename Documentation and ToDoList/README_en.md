@@ -1,10 +1,13 @@
-# Software Documentation (concept, under development)
+# Documentation (short, en)
 
-Doxygen link: elaborate-frangollo-1581ce.netlify.app
+Doxygen Link (copy & paste): https://zippy-starship-cce21f.netlify.app/ 
+
+Tutorial (dt): https://youtu.be/kHz2lOcHaBA
+
 
 - Software: VectorVisualizer
-- Version:  1.1
-- Date:     22. Jul 2025
+- Version:  1.2
+- Date:     23. Jul 2025
 
 ---
 
@@ -13,11 +16,9 @@ Doxygen link: elaborate-frangollo-1581ce.netlify.app
 1. [Objective](#objective)
 2. [Features](#features)  
 3. [Theoretical Basis](#theoretical-basis)
-4. [Requirements](#requirements)
-5. [Software Design](#software-design)
-6. [Instructions for use](#instructionsforuse)
-7. [API documentation](#API-documentation)
-8. [License](#license)
+4. [Software Design](#software-design)
+5. [Instructions for use](#instructionsforuse)
+6. [License](#license)
 
 
 ---
@@ -102,10 +103,6 @@ Curl measures the rotational tendency of a vector field at a point (in 2D, it's 
   - Positive: counter-clockwise spin
   - Negative: clockwise spin
   - Zero: conservative field
-
----
-
-# Requirements
 
 ---
 
@@ -208,9 +205,6 @@ Optionally, you can specify a point `(x, y)` to calculate and display divergence
 
 ---
 
-# API documentation
-
----
 
 # License
 
