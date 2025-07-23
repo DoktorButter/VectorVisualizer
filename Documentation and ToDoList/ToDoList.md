@@ -77,8 +77,8 @@
 ---
 
 ##  9. Tutorial
-- [ ] API documentation
-- [ ] Tutorial with presentation of the project, the possibilities and examples
+- [X] API documentation
+- [X] Tutorial with presentation of the project, the possibilities and examples
 - [X] general documentation
 
 ---
@@ -88,7 +88,6 @@
 - [ ] Procress bar for long calculations
 - [X] all possible calc at ones
 - [ ] Magnitude color vectors
-- [ ] Unit tests for operators
 - [X] Tooltips or help for operator explanations (in Readme)
       
 ---
